@@ -1,5 +1,4 @@
 package com.sociedadmedica.usuario.model;
-import com.sociedadmedica.usuario.model.RolUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-
-import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.enabled;
 
 @Data
 @NoArgsConstructor
