@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="Users")
+@Table(name="Usuario")
 @Builder
 public class UsuarioModel implements UserDetails {
     @Id
