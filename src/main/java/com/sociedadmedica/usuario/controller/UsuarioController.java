@@ -17,17 +17,17 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
-    @PostMapping("/api/registro")
+    @PostMapping("/registro")
     public UsuarioResponse register(@Valid @RequestBody RegistroRequest request) {
         return usuarioService.register(request);
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     public UsuarioResponse login(@Valid @RequestBody LoginRequest request) {
         return usuarioService.login(request);
     }
 
-    @GetMapping("/api/me")
+    @GetMapping("/me")
     public UsuarioResponse me(@AuthenticationPrincipal UsuarioModel user) {
         if (user == null) {
             throw new RuntimeException("No autenticado");
