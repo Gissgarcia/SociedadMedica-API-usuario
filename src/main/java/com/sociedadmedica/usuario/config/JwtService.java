@@ -1,5 +1,6 @@
 package com.sociedadmedica.usuario.config;
 
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +15,7 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    @Value("S3R6V01SRE1DNDYzQ2hMWFh5VzR5Q1g2U0FhNHJmN0E=")
+    @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration}")
@@ -30,6 +31,7 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        // aquí podrías agregar claims extra si quieres
         return buildToken(claims, userDetails.getUsername());
     }
 
