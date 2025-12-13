@@ -14,9 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.*;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 import java.util.List;
 
+@EnableMethodSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -33,7 +35,25 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuario/**").permitAll()
+
+                        // ✅ Preflight CORS
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // ✅ RUTAS PÚBLICAS (sin JWT)
+                        .requestMatchers(
+                                "/api/usuario/login",
+                                "/api/usuario/registro",
+                                "/api/usuario/password/forgot",
+                                "/api/usuario/password/reset"
+                        ).permitAll()
+
+                        // ✅ EJEMPLO FUTURO (si creas endpoints admin)
+                        .requestMatchers("/api/usuario/admin/**").hasRole("ADMIN")
+
+                        // ✅ TODO lo demás en /api/usuario requiere JWT
+                        .requestMatchers("/api/usuario/**").authenticated()
+
+                        // ✅ cualquier otra ruta del microservicio
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
@@ -61,19 +81,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // CORS: para permitir React y tu app
+    // ✅ CORS: React + Android
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173", // 👈 Vite React (tu frontend actual)
-                "http://localhost:3000", // React viejo (si lo sigues usando)
-                "http://localhost:8081", // pruebas backend antiguas
-                "http://10.0.2.2:8081"   // emulador Android apuntando al host
+                "http://localhost:5173",
+                "http://localhost:3000"
         ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With", "Content-Type"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

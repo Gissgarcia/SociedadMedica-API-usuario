@@ -1,6 +1,8 @@
 package com.sociedadmedica.usuario.model;
 
 public enum RolUsuario {
-    CLIENT,
+    PACIENTE,
+    DOCTOR,
+    RECEPCIONISTA,
     ADMIN
 }
