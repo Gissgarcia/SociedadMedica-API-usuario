@@ -24,9 +24,6 @@ public class UsuarioService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    // =========================
-    // REGISTRO (PUBLICO)
-    // =========================
     public UsuarioResponse register(RegistroRequest request) {
 
         if (usuarioRepository.existsByEmail(request.getEmail())) {

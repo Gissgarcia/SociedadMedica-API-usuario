@@ -11,6 +11,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
 
     boolean existsByEmail(String email);
 
-    // ✅ necesario para reset password
+    // ✅ necesario para forgot / reset password
     Optional<UsuarioModel> findByResetTokenHash(String resetTokenHash);
 }
