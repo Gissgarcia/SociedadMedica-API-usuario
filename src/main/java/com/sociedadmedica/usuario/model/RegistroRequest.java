@@ -2,21 +2,20 @@ package com.sociedadmedica.usuario.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class RegistroRequest {
 
-    @NotBlank(message = "Debe ingresar un nombre.")
-    @Size(min = 4, max = 50, message = "El nombre debe tener entre 4 y 50 caracteres.")
+    @NotBlank
     private String name;
 
-    @Email(message = "Debe ser un correo electrónico válido.")
-    @NotBlank(message = "Debe ingresar un correo.")
+    @Email
+    @NotBlank
     private String email;
 
-    @NotBlank(message = "Debe ingresar una contraseña.")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres.")
+    @NotBlank
     private String password;
+
+    private RolUsuario role;
 }
