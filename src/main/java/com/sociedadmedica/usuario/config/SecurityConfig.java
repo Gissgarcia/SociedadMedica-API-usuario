@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuario").permitAll()
+                        .requestMatchers("/api/usuario/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
@@ -61,18 +61,19 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // CORS: para permitir React y tu app
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "http://localhost:3000", // React
-                "http://localhost:8081", // pruebas
+                "http://localhost:5173", // 👈 Vite React (tu frontend actual)
+                "http://localhost:3000", // React viejo (si lo sigues usando)
+                "http://localhost:8081", // pruebas backend antiguas
                 "http://10.0.2.2:8081"   // emulador Android apuntando al host
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With", "Content-Type"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
